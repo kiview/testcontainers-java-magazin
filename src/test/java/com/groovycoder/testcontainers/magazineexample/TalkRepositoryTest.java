@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.UUID;
 
 import static org.junit.Assert.*;
 
@@ -28,6 +29,7 @@ public class TalkRepositoryTest {
 
         try (Statement s = c.createStatement()) {
             s.execute("CREATE TABLE talks (" +
+                    "id uuid PRIMARY KEY," +
                     "title varchar(255)," +
                     "speaker varchar(255)" +
                     ");");
@@ -48,10 +50,21 @@ public class TalkRepositoryTest {
 
     @Test
     public void contains_one_talk_after_inserting_one_talk() throws SQLException {
-        Talk t = new Talk("An introduction to Testcontainers", "Kevin Wittek");
+        Talk t = new Talk(UUID.randomUUID(), "An introduction to Testcontainers", "Kevin Wittek");
         repository.add(t);
 
         assertEquals(1, repository.count());
+    }
+
+    @Test
+    public void can_retrieve_talk_for_id() throws SQLException {
+        UUID uuid = UUID.randomUUID();
+        Talk t = new Talk(uuid, "An introduction to Testcontainers", "Kevin Wittek");
+
+        repository.add(t);
+        Talk retrievedTalk = repository.get(uuid);
+
+        assertEquals(t, retrievedTalk);
     }
 
 }
