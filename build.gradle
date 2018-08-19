@@ -31,5 +31,7 @@ dependencies {
 
     testCompile 'org.testcontainers:testcontainers-bom:1.8.3'
     testCompile 'org.testcontainers:postgresql'
-    testCompile 'org.testcontainers:kafka'
+
+    functionalTestCompile "org.seleniumhq.selenium:selenium-support:3.6.0"
+    functionalTestCompile 'org.testcontainers:selenium'
 }
