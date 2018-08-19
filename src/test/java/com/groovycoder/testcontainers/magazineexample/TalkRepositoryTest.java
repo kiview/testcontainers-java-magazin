@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.Assert.*;
@@ -62,9 +63,15 @@ public class TalkRepositoryTest {
         Talk t = new Talk(uuid, "An introduction to Testcontainers", "Kevin Wittek");
 
         repository.add(t);
-        Talk retrievedTalk = repository.get(uuid);
+        Talk retrievedTalk = repository.get(uuid).get();
 
         assertEquals(t, retrievedTalk);
+    }
+
+    @Test
+    public void return_empty_result_if_id_not_existing() throws SQLException {
+        Optional<Talk> retrievedTalk = repository.get(UUID.randomUUID());
+        assertFalse(retrievedTalk.isPresent());
     }
 
 }

@@ -1,6 +1,7 @@
 package com.groovycoder.testcontainers.magazineexample;
 
 import java.sql.*;
+import java.util.Optional;
 import java.util.UUID;
 
 public class TalkRepository {
@@ -32,15 +33,17 @@ public class TalkRepository {
         }
     }
 
-
-    public Talk get(UUID uuid) throws SQLException {
+    public Optional<Talk> get(UUID uuid) throws SQLException {
         try (PreparedStatement ps = connection.prepareStatement(GET_QUERY)) {
             ps.setObject(1, uuid);
+
             ResultSet rs = ps.executeQuery();
-            rs.next();
-
-            return new Talk((UUID) rs.getObject(1), rs.getString(2), rs.getString(3));
-
+            if (rs.next()) {
+                Talk queriedTalk = new Talk((UUID) rs.getObject(1), rs.getString(2), rs.getString(3));
+                return Optional.of(queriedTalk);
+            } else {
+                return Optional.empty();
+            }
         }
     }
 }

@@ -11,6 +11,15 @@ repositories {
     mavenCentral()
 }
 
+sourceSets {
+    functionalTest
+}
+
+configurations {
+    functionalTestCompile.extendsFrom testCompile
+    functionalTestRuntime.extendsFrom testRuntime
+}
+
 dependencies {
 
     compile 'org.apache.kafka:kafka-clients:2.0.0'
