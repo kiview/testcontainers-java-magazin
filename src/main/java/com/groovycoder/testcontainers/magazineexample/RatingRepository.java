@@ -31,7 +31,11 @@ public class RatingRepository {
         producer.close();
     }
 
-    public void insert(Rating rating) throws ExecutionException, InterruptedException {
-        producer.send(new ProducerRecord<>("ratings", rating.getTalkId().toString())).get();
+    public void add(Rating rating) throws ExecutionException, InterruptedException {
+        producer.send(new ProducerRecord<>("ratings", serialize(rating))).get();
+    }
+
+    private String serialize(Rating rating) {
+        return rating.getTalkId().toString();
     }
 }

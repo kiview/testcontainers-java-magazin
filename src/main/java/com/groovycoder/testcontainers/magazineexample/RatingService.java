@@ -16,7 +16,7 @@ public class RatingService {
     public void recordRating(Rating rating) throws SQLException, ExecutionException, InterruptedException {
 
         if (talkRepository.get(rating.getTalkId()).isPresent()) {
-            ratingRepository.insert(rating);
+            ratingRepository.add(rating);
         }
 
     }
